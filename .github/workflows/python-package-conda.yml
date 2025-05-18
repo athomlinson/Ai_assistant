@@ -1,0 +1,92 @@
+import matplotlib.pyplot as plt
+
+# Count data for visualization
+airport_counts = df['ExportAirport'].value_counts()
+staff_counts = df['StaffMember'].value_counts()
+booked_counts = df['ExportBooked'].str.upper().value_counts()
+
+# Plot 1: Shipments per Export Airport
+plt.figure(figsize=(6, 4))
+airport_counts.plot(kind='bar', color='#e4002b')
+plt.title('Shipments per Export Airport', fontsize=12)
+plt.ylabel('Count')
+plt.xticks(rotation=0)
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.savefig("/mnt/data/qantas_airport_distribution.png")
+plt.close()
+
+# Plot 2: Booked vs Unbooked Exports
+plt.figure(figsize=(4, 4))
+booked_counts.plot(kind='pie', autopct='%1.1f%%', startangle=90, colors=['#e4002b', '#999999'])
+plt.title('Booked vs Unbooked Exports', fontsize=12)
+plt.ylabel('')
+plt.tight_layout()
+plt.savefig("/mnt/data/qantas_booking_ratio.png")
+plt.close()
+
+# Plot 3: Staff Member Assignment
+plt.figure(figsize=(6, 4))
+staff_counts.plot(kind='bar', color='#005aa7')
+plt.title('Shipments by Staff Member', fontsize=12)
+plt.ylabel('Count')
+plt.xticks(rotation=0)
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.savefig("/mnt/data/qantas_staff_distribution.png")
+plt.close()
+
+# Assemble HTML dashboard
+dashboard_html = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Qantas Export Dashboard</title>
+    <style>
+        body {{
+            font-family: 'Segoe UI', sans-serif;
+            background: #fff;
+            color: #000;
+            margin: 0;
+            padding: 30px;
+        }}
+        h1 {{
+            text-align: center;
+            color: #e4002b;
+            margin-bottom: 40px;
+        }}
+        .charts {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: auto;
+        }}
+        .chart-full {{
+            grid-column: 1 / -1;
+        }}
+        img {{
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.15);
+        }}
+    </style>
+</head>
+<body>
+    <h1>Qantas Export Logistics Dashboard</h1>
+    <div class="charts">
+        <div><img src="qantas_airport_distribution.png" alt="Shipments per Export Airport"></div>
+        <div><img src="qantas_booking_ratio.png" alt="Booked vs Unbooked Exports"></div>
+        <div class="chart-full"><img src="qantas_staff_distribution.png" alt="Shipments by Staff Member"></div>
+    </div>
+</body>
+</html>
+"""
+
+# Save HTML file
+dashboard_file_path = "/mnt/data/Qantas_Shipment_Dashboard.html"
+with open(dashboard_file_path, "w") as f:
+    f.write(dashboard_html)
+
+dashboard_file_path                                      
